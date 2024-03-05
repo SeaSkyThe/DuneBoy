@@ -1,0 +1,6 @@
+(library
+  (name DuneBoy)
+  (libraries stdint))
+
+; https://dune.readthedocs.io/en/stable/dune-files.html#include-subdirs
+(include_subdirs unqualified) 
