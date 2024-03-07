@@ -101,3 +101,60 @@ let write_rr t rr value =
     ; f = Uint8.of_int (Uint16.to_int (Uint16.shift_right value 8) land 0xFF)
     }
 ;;
+
+(* FLAG REGISTER F *)
+
+type flag =
+  | Zero
+  | Subtract
+  | Half_carry
+  | Carry
+
+let zero_flag_byte_position = 7
+let subtract_flag_byte_position = 6
+let half_carry_flag_byte_position = 5
+let carry_flag_byte_position = 4
+let mask_0b00010000 = 0b00010000
+let mask_0b00100000 = 0b00100000
+let mask_0b01000000 = 0b01000000
+let mask_0b10000000 = 0b10000000
+let mask_0b11110000 = 0b11110000
+
+let read_flag t flag =
+  match flag with
+  | Zero -> Uint8.to_int t.f land mask_0b10000000 <> 0
+  | Subtract -> Uint8.to_int t.f land mask_0b01000000 <> 0
+  | Half_carry -> Uint8.to_int t.f land mask_0b00100000 <> 0
+  | Carry -> Uint8.to_int t.f land mask_0b00010000 <> 0
+;;
+
+let set_flag t flag =
+  t.f
+    <- (match flag with
+        | Zero -> Uint8.of_int (Uint8.to_int t.f lor mask_0b10000000)
+        | Subtract -> Uint8.of_int (Uint8.to_int t.f lor mask_0b01000000)
+        | Half_carry -> Uint8.of_int (Uint8.to_int t.f lor mask_0b00100000)
+        | Carry -> Uint8.of_int (Uint8.to_int t.f lor mask_0b00010000))
+;;
+
+let set_flags t ?(c = false) ?(h = false) ?(n = false) ?(z = false) () =
+  t.f
+    <- Uint8.of_int
+         ((if c then mask_0b00010000 else 0)
+          lor (if h then mask_0b00100000 else 0)
+          lor (if n then mask_0b01000000 else 0)
+          lor if z then mask_0b10000000 else 0)
+;;
+
+let unset_flag t flag =
+  t.f
+    <- (match flag with
+        | Zero -> Uint8.of_int (Uint8.to_int t.f land lnot mask_0b10000000)
+        | Subtract -> Uint8.of_int (Uint8.to_int t.f land lnot mask_0b01000000)
+        | Half_carry -> Uint8.of_int (Uint8.to_int t.f land lnot mask_0b00100000)
+        | Carry -> Uint8.of_int (Uint8.to_int t.f land lnot mask_0b00010000))
+;;
+
+let clear_flags t =
+  t.f <- Uint8.of_int (Uint8.to_int t.f land lnot mask_0b11110000)
+;;
