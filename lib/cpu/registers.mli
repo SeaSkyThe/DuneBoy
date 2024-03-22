@@ -35,12 +35,6 @@ val write_rr : t -> rr -> Stdint.uint16 -> t
 
 (* Flag Registers *)
 
-val zero_flag_byte_position : Stdint.uint8
-val subtract_flag_byte_position : Stdint.uint8
-val half_carry_flag_byte_position : Stdint.uint8
-val carry_flag_byte_position : Stdint.uint8
-
-
 type flag =
   | Zero (* name : z *)
   | Subtract (* name : n *)

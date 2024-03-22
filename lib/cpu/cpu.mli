@@ -1,4 +1,4 @@
-type t
+type cpu_state
 
-val create : bus:Bus.t -> registers:Registers.t -> t
-val run_instruction : t -> int (*return the # of cycles consumed*) 
+val create : registers:Registers.t -> pc: Stdint.uint16 -> cpu_state
+val execute: cpu_state -> Instructions.instruction -> int (*return the # of cycles consumed*) 

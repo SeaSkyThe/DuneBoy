@@ -110,10 +110,6 @@ type flag =
   | Half_carry
   | Carry
 
-let zero_flag_byte_position = 7
-let subtract_flag_byte_position = 6
-let half_carry_flag_byte_position = 5
-let carry_flag_byte_position = 4
 let mask_0b00010000 = 0b00010000
 let mask_0b00100000 = 0b00100000
 let mask_0b01000000 = 0b01000000
