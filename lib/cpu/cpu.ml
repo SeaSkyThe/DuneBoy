@@ -90,4 +90,31 @@ let execute cpu_state (inst : Instructions.instruction) =
       ~c:(result > 0xFF)
       ();
     write arg1 (Uint8.of_int result)
+  | SUB (arg1, arg2) ->
+    let val1 = read arg1 in
+    let val2 = read arg2 in
+    let result = Uint8.to_int val1 - Uint8.to_int val2 in
+    set_flags
+      ~z:(result = 0)
+      ~h:(Uint8.to_int val1 land 0x0F < Uint8.to_int val2 land 0x0F)
+      ~n:true
+      ~c:(Uint8.to_int val1 < Uint8.to_int val2)
+      ();
+    write arg1 (Uint8.of_int result)
+  | SBC (arg1, arg2) ->
+    let c =
+      if Registers.(read_flag cpu_state.registers Carry)
+      then Uint8.one
+      else Uint8.zero
+    in
+    let val1 = read arg1 in
+    let val2 = read arg2 in
+    let result = Uint8.to_int val1 - (Uint8.to_int val2 + Uint8.to_int c) in
+    set_flags
+      ~z:(result = 0)
+      ~h:(Uint8.to_int val1 land 0x0F < Uint8.to_int val2 land 0x0F + Uint8.to_int c)
+      ~n:true
+      ~c:((Uint8.to_int val1) < Uint8.to_int val2 + Uint8.to_int c)
+      ();
+    write arg1 (Uint8.of_int result)
 ;;
