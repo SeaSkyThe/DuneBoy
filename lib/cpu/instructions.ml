@@ -22,3 +22,4 @@ type instruction =
   | ADD8 of Stdint.uint8 arg * Stdint.uint8 arg
   | ADD16 of Stdint.uint16 arg * Stdint.uint16 arg
   | ADDSP of int8
+  | ADC of Stdint.uint8 arg * Stdint.uint8 arg
