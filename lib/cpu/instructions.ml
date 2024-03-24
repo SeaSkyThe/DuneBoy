@@ -13,9 +13,12 @@ type _ arg =
   | FF00_C : uint8 arg
   | HL_inc : uint8 arg
   | HL_dec : uint8 arg
-  | SP     : uint16 arg
+  | SP : uint16 arg
   | SP_offset : uint8 -> uint16 arg
 
 type instruction =
+  | LD8 of Stdint.uint8 arg * Stdint.uint8 arg
+  | LD16 of Stdint.uint16 arg * Stdint.uint16 arg
   | ADD8 of Stdint.uint8 arg * Stdint.uint8 arg
   | ADD16 of Stdint.uint16 arg * Stdint.uint16 arg
+  | ADDSP of int8

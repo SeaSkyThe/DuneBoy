@@ -15,5 +15,8 @@ type _ arg =
   | SP_offset : uint8 -> uint16 arg
 
 type instruction =
+  | LD8 of Stdint.uint8 arg * Stdint.uint8 arg
+  | LD16 of Stdint.uint16 arg * Stdint.uint16 arg
   | ADD8 of Stdint.uint8 arg * Stdint.uint8 arg
   | ADD16 of Stdint.uint16 arg * Stdint.uint16 arg
+  | ADDSP of int8
